@@ -9,8 +9,13 @@ import random
 
 CARDS = ["Ac","2c","3c","4c","5c","6c","7c","8c","9c","10c","Jc","Qc","Kc","Ad","2d","3d","4d","5d","6d","7d","8d","9d","10d","Jd","Qd","Kd","Ah","2h","3h","4h","5h","6h","7h","8h","9h","10h","Jh","Qh","Kh","As","2s","3s","4s","5s","6s","7s","8s","9s","10s","Js","Qs","Ks",]
 PLAYERS = ["Player1","Dealer"]
-playerhand = []
-dealerhand = []
+PLAYERHAND = []
+DEALERHAND = []
+HANDS = 0
+WINS = 0
+LOSSES = 0
+PLAYERRESULT = 0
+DEALERRESULT = 0
 
 def shuffle():
     print("Shuffling deck", end="")
@@ -25,15 +30,22 @@ def shuffle():
         i += 1
     print(CARDS)
 
-def determinehandval(hand):
+def gethandval(hand):
     handval=0
     for card in hand:
-        cardval = determintecardval(card)
+        cardval = getcardval(card)
         handval = handval + cardval
     return handval
 
-def determintecardval(card):
+def getcardval(card):
     cardval = 0   
+    try:
+        index = card.index("A")
+        print("Ace")
+        cardval = 11
+    except TypeError:
+        pass
+    
     if "A" in card:
         print("Ace")
         cardval = 11
@@ -71,16 +83,16 @@ def determintecardval(card):
 
 def dealcards():
     print("Dealing", end="")
-    player="Player1"
+    player=PLAYERS[0]
     i = 0
     while i < 4:
         if player == "Player1":
-            playerhand.insert(i, CARDS[i])
+            PLAYERHAND.insert(i, CARDS[i])
             print(".", end="")
             player = "Dealer"
             i += 1
         if player == "Dealer":
-            dealerhand.insert(i, CARDS[i])
+            DEALERHAND.insert(i, CARDS[i])
             print(".", end="")
             player = "Player1"
             i += 1
@@ -96,27 +108,19 @@ def stay():
 def determinewin():
     print("Foo")
 
-
-
 def main():
-    
-    hands = 0
-    wins = 0
-    losses = 0
-    playerresult = 0
-    dealerresult = 0
     print("Welcome to Blackjack.")
     input("Press ENTER to continue.")
     shuffle()
     dealcards()
-    print(playerhand)
-    print(dealerhand)
-    hands += 1
-    playerresult = determinehandval(playerhand)
-    dealerresult = determinehandval(dealerhand)
-    if playerresult < 21:
-        print("Player1 Hand: ", playerhand, "                             Dealer Hand: ", dealerhand[0]," ", dealerhand[1])
-        print("Player1 Val: ", playerresult, "                             Dealer Val: x")
+    print(PLAYERHAND)
+    print(DEALERHAND)
+    HANDS += 1
+    PLAYERRESULT = gethandval(PLAYERHAND)
+    DEALERRESULT = gethandval(DEALERHAND)
+    if PLAYERRESULT < 21:
+        print("Player1 Hand: ", PLAYERHAND, "                             Dealer Hand: ", DEALERHAND[0]," ", DEALERHAND[1])
+        print("Player1 Val: ", PLAYERRESULT, "                             Dealer Val: x")
         print("")
         print("Hit or Stay (H or S)?")
         action = input(action)
@@ -126,19 +130,18 @@ def main():
             print("Stay")
         else:
             print("Do nothing")
-    if playerresult == 21:
-        print("Player1 Hand: ", playerhand, "                             Dealer Hand: Xx, Xx")
-        print("Player1 Val: ", playerresult, "                             Dealer Val: x")
+    if PLAYERRESULT == 21:
+        print("Player1 Hand: ", PLAYERHAND, "                             Dealer Hand: Xx, Xx")
+        print("Player1 Val: ", PLAYERRESULT, "                             Dealer Val: x")
         print("")
         print("Blackjack! Player 1 Wins!")
-        wins += 1
-    if playerresult > 21:
-        print("Player1 Hand: ", playerhand, "                             Dealer Hand: Xx, Xx")
-        print("Player1 Val: ", playerresult, "                             Dealer Val: x")
+        WINS += 1
+    if PLAYERRESULT > 21:
+        print("Player1 Hand: ", PLAYERHAND, "                             Dealer Hand: Xx, Xx")
+        print("Player1 Val: ", PLAYERRESULT, "                             Dealer Val: x")
         print("")
         print("Bust! Player 1 Loses!")
-        losses += 1
-
-        
+        LOSSES += 1
+  
 if __name__ == "__main__":
     main()
