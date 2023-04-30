@@ -11,7 +11,6 @@ CARDS = ["Ac","2c","3c","4c","5c","6c","7c","8c","9c","10c","Jc","Qc","Kc","Ad",
 PLAYERS = ["Player1","Dealer"]
 PLAYERHAND = []
 DEALERHAND = []
-HANDS = 0
 WINS = 0
 LOSSES = 0
 PLAYERRESULT = 0
@@ -39,13 +38,6 @@ def gethandval(hand):
 
 def getcardval(card):
     cardval = 0   
-    try:
-        index = card.index("A")
-        print("Ace")
-        cardval = 11
-    except TypeError:
-        pass
-    
     if "A" in card:
         print("Ace")
         cardval = 11
@@ -79,6 +71,12 @@ def getcardval(card):
     if "J" in card:
         print("Jack")
         cardval = 10
+    if "Q" in card:
+        print("Queen")
+        cardval = 10
+    if "K" in card:
+        print("King")
+        cardval = 10
     return cardval 
 
 def dealcards():
@@ -87,12 +85,14 @@ def dealcards():
     i = 0
     while i < 4:
         if player == "Player1":
-            PLAYERHAND.insert(i, CARDS[i])
+            PLAYERHAND.insert(i, CARDS[0])
+            CARDS.pop(0)
             print(".", end="")
             player = "Dealer"
             i += 1
         if player == "Dealer":
-            DEALERHAND.insert(i, CARDS[i])
+            DEALERHAND.insert(i, CARDS[0])
+            CARDS.pop(0)
             print(".", end="")
             player = "Player1"
             i += 1
@@ -109,13 +109,14 @@ def determinewin():
     print("Foo")
 
 def main():
+    HANDCOUNT = 0
     print("Welcome to Blackjack.")
     input("Press ENTER to continue.")
     shuffle()
     dealcards()
     print(PLAYERHAND)
     print(DEALERHAND)
-    HANDS += 1
+    HANDCOUNT += 1
     PLAYERRESULT = gethandval(PLAYERHAND)
     DEALERRESULT = gethandval(DEALERHAND)
     if PLAYERRESULT < 21:
